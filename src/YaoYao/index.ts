@@ -9,13 +9,15 @@ import { Slash } from "../types";
 
 class YaoYao extends Client {
     public slash: Collection<string, Slash> = new Collection();
+    public wakeUpTime: number = Math.floor(Date.now() / 1000);
 
     constructor() {
         super({
             intents: [
                 GatewayIntentBits.Guilds,
-                GatewayIntentBits.MessageContent,
                 GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
             ],
         });
     }
