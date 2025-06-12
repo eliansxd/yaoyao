@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import { Colors } from "../constants/colors";
 import { EmbedOptions } from "../types";
 
-export default function createEmbed(options: EmbedOptions): EmbedBuilder {
+function createEmbed(options: EmbedOptions): EmbedBuilder {
     const {
         title,
         description,
@@ -21,3 +21,5 @@ export default function createEmbed(options: EmbedOptions): EmbedBuilder {
     if (footer) embed.setFooter({ text: footer });
     return embed;
 }
+
+export { createEmbed };

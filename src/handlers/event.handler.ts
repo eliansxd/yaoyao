@@ -1,4 +1,5 @@
 import YaoYao from "../YaoYao";
+import path from "path";
 import fs from "fs";
 
 export const EventHandler = async (client: YaoYao) => {
@@ -11,8 +12,13 @@ export const EventHandler = async (client: YaoYao) => {
             .filter((f) => f.endsWith(".ts"));
 
         for (const file of files) {
-            const { event } = await import(`../events/${category}/${file}`);
+            const fullPath = path.resolve(`./src/events/${category}/${file}`);
+            delete require.cache[fullPath];
+
+            const { event } = require(fullPath);
             if (!event) continue;
+
+            client.removeAllListeners(event.name);
 
             if (event.once) {
                 client.once(event.name, event.execute.bind(null, client));

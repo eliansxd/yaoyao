@@ -1,4 +1,5 @@
 import YaoYao from "../YaoYao";
+import path from "path";
 import fs from "fs";
 
 export const SlashHandler = async (client: YaoYao) => {
@@ -11,9 +12,24 @@ export const SlashHandler = async (client: YaoYao) => {
             .filter((f) => f.endsWith(".ts"));
 
         for (const file of files) {
-            const { slash: cmd } = await import(`../slash/${category}/${file}`);
+            const fullPath = path.resolve(`./src/slash/${category}/${file}`);
+            delete require.cache[fullPath];
+
+            const { slash: cmd } = require(fullPath);
             if (!cmd) continue;
-            client.slash.set(cmd.data.name, cmd);
+            if (cmd.subCommand) {
+                client.subCommand.set(cmd.subCommand, cmd);
+                continue;
+            }
+
+            const old = client.slash.get(cmd.data.name);
+
+            if (old) {
+                old.execute = cmd.execute;
+            } else {
+                client.slash.set(cmd.data.name, cmd);
+            }
+
             count++;
         }
     }

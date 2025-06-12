@@ -7,6 +7,6 @@ interface Execute {
 
 export interface Event {
     name: keyof ClientEvents;
-    once?: boolean;
+    once?: boolean | false;
     execute: Execute;
 }
