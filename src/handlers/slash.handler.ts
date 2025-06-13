@@ -4,7 +4,7 @@ import fs from "fs";
 
 export const SlashHandler = async (client: YaoYao) => {
     let count = 0;
-    const categoryPath = path.join(__dirname, "..", "slash");
+    const categoryPath = path.join(__dirname, "..", "slashCommands");
     const categories = fs.readdirSync(categoryPath);
 
     for (const category of categories) {

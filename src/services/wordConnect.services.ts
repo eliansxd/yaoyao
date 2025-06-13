@@ -1,4 +1,4 @@
-import WordConnectStatsModel from "../models/WordConnectStats.model";
+import WordConnectStatsModel from "../database/models/WordConnectStats.model";
 import { IWordConnectStats } from "../types";
 
 /**
