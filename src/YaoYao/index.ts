@@ -4,17 +4,8 @@ import { Slash, SubCommand } from "../types";
 
 class YaoYao extends Client {
     public slash: Collection<string, Slash> = new Collection();
-    public wakeUpTime: number = Math.floor(Date.now() / 1000);
     public subCommand: Collection<string, SubCommand> = new Collection();
-    public wordConnectStats: Collection<
-        string,
-        {
-            lastWord: string;
-            usedWords: Array<string>;
-            lastPlayer: string;
-            channelId: string;
-        }
-    > = new Collection();
+    public wakeUpTime: number = Math.floor(Date.now() / 1000);
 
     constructor() {
         super({

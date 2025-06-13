@@ -1,29 +1,19 @@
-import { words } from "../../words";
-import { sleep } from "../../utils/time";
 import { Message, MessagePayload, MessageReplyOptions } from "discord.js";
+import { getStats, updateStats } from "../../services/wordConnect.services";
+import { sleep } from "../../utils/time";
+import { words } from "../../words";
 import { Event } from "../../types";
 
 export const event: Event = {
     name: "messageCreate",
-    execute: async (client, message: Message) => {
+    execute: async (_client, message: Message) => {
         if (message.author.bot || !message.guild) return;
-        const stats = client.wordConnectStats.get(
-            `wordConnect.${message.channelId}`
-        );
-
+        const stats = await getStats(message.channelId);
         if (!stats) return;
-
-        const content = message.content.trim().toLowerCase();
-
         if (message.channelId === stats.channelId) {
+            const content = message.content.trim().toLowerCase();
             const messageWords = content.split(" ");
-            if (messageWords.length !== 2) {
-                await message.react("❌");
-                await sendAndDeleteAfter(`Bạn cần gửi theo cú pháp: từ1 từ2`);
-                return;
-            }
-            const [firstWord, lastWord] = messageWords;
-            const fullWord = `${firstWord} ${lastWord}`;
+            const usedWords = stats.usedWords ?? [];
 
             if (message.author.id == stats.lastPlayer) {
                 await message.react("❌");
@@ -32,6 +22,15 @@ export const event: Event = {
                 );
                 return;
             }
+
+            if (messageWords.length !== 2) {
+                await message.react("❌");
+                await sendAndDeleteAfter(`Bạn cần gửi theo cú pháp: từ1 từ2`);
+                return;
+            }
+
+            const [firstWord, lastWord] = messageWords;
+            const fullWord = `${firstWord} ${lastWord}`;
 
             if (firstWord !== stats?.lastWord) {
                 await message.react("❌");
@@ -45,7 +44,6 @@ export const event: Event = {
             const validWords: string[] = rawWords.filter(
                 (w) => typeof w === "string"
             );
-
             if (!validWords.includes(lastWord)) {
                 await message.react("❌");
                 await sendAndDeleteAfter(
@@ -54,7 +52,7 @@ export const event: Event = {
                 return;
             }
 
-            if (stats.usedWords.includes(fullWord)) {
+            if (usedWords.includes(fullWord)) {
                 await message.react("❌");
                 await sendAndDeleteAfter(
                     `Từ này đã được dùng ở lần chơi trước, vui lòng sử dụng từ khác.`
@@ -62,13 +60,11 @@ export const event: Event = {
                 return;
             }
 
-            stats.usedWords.push(fullWord);
-            stats.lastWord = lastWord;
-            stats.lastPlayer = message.author.id;
-            client.wordConnectStats.set(
-                `wordConnect.${message.channelId}`,
-                stats
-            );
+            await updateStats(message.channelId, {
+                usedWords: [...usedWords, fullWord],
+                lastWord,
+                lastPlayer: message.author.id,
+            });
             return message.react("✅");
         }
 
@@ -84,5 +80,6 @@ export const event: Event = {
                 console.error(err);
             }
         }
+        return;
     },
 };

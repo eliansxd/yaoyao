@@ -4,15 +4,16 @@ import fs from "fs";
 
 export const SlashHandler = async (client: YaoYao) => {
     let count = 0;
-    const categories = fs.readdirSync("./src/slash");
+    const categoryPath = path.join(__dirname, "..", "slash");
+    const categories = fs.readdirSync(categoryPath);
 
     for (const category of categories) {
         const files = fs
-            .readdirSync(`./src/slash/${category}`)
-            .filter((f) => f.endsWith(".ts"));
+            .readdirSync(path.join(categoryPath, category))
+            .filter((f) => f.endsWith(".ts") || f.endsWith(".js"));
 
         for (const file of files) {
-            const fullPath = path.resolve(`./src/slash/${category}/${file}`);
+            const fullPath = path.join(categoryPath, category, file);
             delete require.cache[fullPath];
 
             const { slash: cmd } = require(fullPath);

@@ -6,9 +6,9 @@ export const slash: Slash = {
         .setName("ping")
         .setDescription("Xem độ trễ của bot."),
 
-    async execute(client, interaction) {
+    async execute(_client, interaction) {
         await interaction.reply("🏓 Pong!");
-        const latency = interaction.createdTimestamp - Date.now();
+        const latency = Date.now() - interaction.createdTimestamp;
         await interaction.editReply(`🏓 Pong! \`${latency}ms\``);
     },
 };

@@ -4,15 +4,16 @@ import fs from "fs";
 
 export const EventHandler = async (client: YaoYao) => {
     let count = 0;
-    const categories = fs.readdirSync("./src/events");
+    const categoryPath = path.join(__dirname, "..", "events");
+    const categories = fs.readdirSync(categoryPath);
 
     for (const category of categories) {
         const files = fs
-            .readdirSync(`./src/events/${category}`)
-            .filter((f) => f.endsWith(".ts"));
+            .readdirSync(path.join(categoryPath, category))
+            .filter((f) => f.endsWith(".ts") || f.endsWith(".js"));
 
         for (const file of files) {
-            const fullPath = path.resolve(`./src/events/${category}/${file}`);
+            const fullPath = path.join(categoryPath, category, file);
             delete require.cache[fullPath];
 
             const { event } = require(fullPath);

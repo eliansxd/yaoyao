@@ -1,9 +1,9 @@
-import { getStats, updateStats } from "../../services/wordConnect.services";
+import { getStats, removeStats } from "../../services/wordConnect.services";
 import { MessageFlags } from "discord.js";
 import { SubCommand } from "../../types";
 
 export const slash: SubCommand = {
-    subCommand: "word_connect.reset",
+    subCommand: "word_connect.remove",
     async execute(_client, interaction) {
         const channel = interaction.options.getChannel("channel");
         if (channel) {
@@ -14,8 +14,8 @@ export const slash: SubCommand = {
                     flags: MessageFlags.Ephemeral,
                 });
             }
-            await updateStats(channel.id, { usedWords: [] });
-            interaction.reply(`Đã đặt lại từ đã sử dụng trong kênh.`);
+            await removeStats(channel.id);
+            interaction.reply(`Đã xóa thiết lập kênh chơi Nối Từ.`);
         }
         return;
     },
