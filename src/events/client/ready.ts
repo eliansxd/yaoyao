@@ -1,20 +1,22 @@
+import BotEvent from "../../modules/event";
 import { ActivityType } from "discord.js";
-import { Event } from "../../types";
+import YaoYao from "../../YaoYao";
 
-export const event: Event = {
+export default new BotEvent({
     name: "ready",
-    execute: async (client) => {
+    async run(client) {
         // Logging and set status
-        console.log(`${client.user?.tag} is ready!`);
-        client.user?.setPresence({
+        console.log(`${client.user.tag} is ready!`);
+        client.user.setPresence({
             activities: [{ name: "linh~", type: ActivityType.Watching }],
             status: "idle",
         });
 
         // Put application commands
-        const slashCommands = [...client.slash.values()].map(
-            (slash) => slash.data
+        const yaoyao = client as YaoYao;
+        const slashCommands = [...yaoyao.slashCommands.values()];
+        await client.application.commands.set(
+            slashCommands.map((slash) => slash.data)
         );
-        await client.application?.commands.set(slashCommands);
     },
-};
+});

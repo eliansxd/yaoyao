@@ -1,2 +1,4 @@
-export * from "./event.handler";
-export * from "./slash.handler";
+import loadEvents from "./event.handler";
+import loadCommands from "./command.handler";
+
+export { loadEvents, loadCommands };

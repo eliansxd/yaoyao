@@ -1,0 +1,27 @@
+export class WordConnectError extends Error {
+    constructor(message: string) {
+        super(message);
+    }
+}
+
+export class PlayerAlreadyPlayed extends WordConnectError {
+    constructor() {
+        super(
+            `Bạn đã chơi trước đó rồi, hãy chờ người khác nối tiếp từ của bạn.`
+        );
+    }
+}
+
+export class WordUsed extends WordConnectError {
+    constructor() {
+        super(
+            `Từ này đã được dùng ở lần chơi trước, vui lòng sử dụng từ khác.`
+        );
+    }
+}
+
+export class WordNotFound extends WordConnectError {
+    constructor(word: string) {
+        super(`Từ ${word} không tồn tại trong từ điển của bot.`);
+    }
+}

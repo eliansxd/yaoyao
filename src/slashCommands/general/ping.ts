@@ -1,14 +1,15 @@
 import { SlashCommandBuilder } from "discord.js";
-import { Slash } from "../../types";
+import { SlashCommand } from "../../modules/command";
 
-export const slash: Slash = {
-    data: new SlashCommandBuilder()
-        .setName("ping")
-        .setDescription("Xem độ trễ của bot."),
+const data = new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Xem độ trễ của bot.");
 
-    async execute(_client, interaction) {
+export default new SlashCommand({
+    data,
+    async run(interaction) {
         await interaction.reply("🏓 Pong!");
         const latency = Date.now() - interaction.createdTimestamp;
         await interaction.editReply(`🏓 Pong! \`${latency}ms\``);
     },
-};
+});

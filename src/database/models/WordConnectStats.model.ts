@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IWordConnectStats } from "../../types";
+import { IWordConnectStats } from "../interfaces";
 
 const WordConnectStatsSchema = new Schema<IWordConnectStats>({
     channelId: { type: String, required: true },

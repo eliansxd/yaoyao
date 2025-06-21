@@ -1,24 +1,25 @@
-import { SlashCommandBuilder, User } from "discord.js";
-import { Slash } from "../../types";
-import { createEmbed } from "../../utils/embed";
+import { SlashCommandBuilder, User, EmbedBuilder } from "discord.js";
+import { SlashCommand } from "../../modules/command";
 
-export const slash: Slash = {
-    data: new SlashCommandBuilder()
-        .setName("about")
-        .setDescription("Xem thông tin về YaoYao."),
+const data = new SlashCommandBuilder()
+    .setName("about")
+    .setDescription("Xem thông tin về YaoYao.");
 
-    async execute(client, interaction) {
-        if (!client.application?.owner) await client.application?.fetch();
+export default new SlashCommand({
+    data,
+    async run(interaction) {
+        if (!interaction.client.application?.owner)
+            await interaction.client.application?.fetch();
 
-        const owner = client.application?.owner;
+        const owner = interaction.client.application?.owner;
         const ownerName = owner instanceof User ? owner.username : "Unknown";
         const ownerAvatar =
             owner instanceof User ? owner.displayAvatarURL() : "Unknown";
 
-        const botName = client.user?.displayName ?? "YaoYao";
-        const botAvatar = client.user?.displayAvatarURL() ?? "";
+        const botName = interaction.client.user?.displayName ?? "YaoYao";
+        const botAvatar = interaction.client.user?.displayAvatarURL() ?? "";
 
-        const embed = createEmbed({
+        const embed = new EmbedBuilder({
             title: "Thông tin",
             description: [
                 '> *"Không có vì sao để khởi hành, cũng chẳng có điểm dừng để neo đậu."*',
@@ -51,7 +52,7 @@ export const slash: Slash = {
                 },
                 {
                     name: "📡 Kết nối",
-                    value: `\`${client.guilds.cache.size}\` Máy Chủ Trạm — \`${client.users.cache.size}\` Thực Thể được Quan Sát`,
+                    value: `\`${interaction.client.guilds.cache.size}\` Máy Chủ Trạm — \`${interaction.client.users.cache.size}\` Thực Thể được Quan Sát`,
                     inline: false,
                 },
                 {
@@ -67,4 +68,4 @@ export const slash: Slash = {
 
         await interaction.reply({ embeds: [embed] });
     },
-};
+});

@@ -1,35 +1,26 @@
-import { ChatInputCommandInteraction } from "discord.js";
-import { Event } from "../../types";
+import BotEvent from "../../modules/event";
+import YaoYao from "../../YaoYao";
 
-export const event: Event = {
+export default new BotEvent({
     name: "interactionCreate",
-    execute: async (client, interaction: ChatInputCommandInteraction) => {
+    async run(interaction) {
         if (!interaction.isChatInputCommand()) return;
-        try {
-            const commandName = interaction.commandName;
-            const slash = client.slash.get(commandName);
-            if (!slash) return;
 
-            const runCommand = async () => {
-                try {
-                    if (slash.execute) {
-                        await slash.execute(client, interaction);
-                    } else {
-                        const subCommand = interaction.options.getSubcommand();
-                        if (!subCommand) return;
-                        const subCmd = client.subCommand.get(
-                            `${commandName}.${subCommand}`
-                        );
-                        if (!subCmd) return;
-                        await subCmd.execute(client, interaction);
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-            };
-            runCommand();
+        if (interaction.user.bot) return;
+
+        const yaoyao = interaction.client as YaoYao;
+        const command = yaoyao.slashCommands.get(interaction.commandName);
+
+        if (!command) return;
+        if (command.disabled) {
+            return interaction.reply(`Lệnh này đã bị tắt.`);
+        }
+
+        try {
+            await command.run(interaction);
         } catch (err) {
             console.error(err);
+            return;
         }
     },
-};
+});

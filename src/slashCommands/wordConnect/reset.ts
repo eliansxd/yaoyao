@@ -1,22 +1,45 @@
-import { getStats, updateStats } from "../../services/wordConnect.services";
-import { MessageFlags } from "discord.js";
-import { SubCommand } from "../../types";
+import { getStats, updateStats } from "../../modules/wordConnect";
+import { ChannelType, SlashCommandBuilder } from "discord.js";
+import { SlashCommand } from "../../modules/command";
 
-export const slash: SubCommand = {
-    subCommand: "word_connect.reset",
-    async execute(_client, interaction) {
-        const channel = interaction.options.getChannel("channel");
-        if (channel) {
-            const stats = await getStats(channel.id);
-            if (!stats) {
-                return interaction.reply({
-                    content: `Kênh này chưa được thiết lập để chơi Nối Từ.`,
-                    flags: MessageFlags.Ephemeral,
-                });
+const data = new SlashCommandBuilder()
+    .setName("wordconnect_reset")
+    .setDescription("Đặt lại từ đã sử dụng.")
+    .addChannelOption((opt) =>
+        opt
+            .setName("channel")
+            .setDescription("Kênh để chơi nối từ.")
+            .addChannelTypes(ChannelType.GuildText)
+    );
+
+export default new SlashCommand({
+    data,
+    async run(interaction) {
+        let channel = interaction.options.getChannel("channel");
+        if (channel?.type !== ChannelType.GuildText) {
+            if (interaction.channel?.type !== ChannelType.GuildText) {
+                return interaction.reply(`Vui lòng chọn kênh văn bản.`);
+            } else {
+                channel = interaction.channel;
             }
-            await updateStats(channel.id, { usedWords: [] });
-            interaction.reply(`Đã đặt lại từ đã sử dụng trong kênh.`);
         }
-        return;
+
+        try {
+            const stats = await getStats(channel.id);
+            if (!stats)
+                return interaction.reply(
+                    "Kênh này chưa được đặt là kênh chơi nối từ."
+                );
+
+            await updateStats(channel.id, { usedWords: [] });
+            return interaction.reply(
+                `Đã đặt lại từ trong kênh ${channel.toString()}.`
+            );
+        } catch (err) {
+            console.error(err);
+            return interaction.reply(
+                "Đã có lỗi xảy ra khi thiết lập trò chơi."
+            );
+        }
     },
-};
+});
