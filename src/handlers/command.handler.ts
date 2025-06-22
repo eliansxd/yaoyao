@@ -1,4 +1,4 @@
-import { SlashCommand } from "../modules/command";
+import { MessageCommand, SlashCommand } from "../modules/command";
 import { readdirSync, lstatSync } from "fs";
 import path from "path";
 
@@ -16,11 +16,12 @@ export default async function loadCommands(client: YaoYao) {
         }
 
         if (!item.match(/\.(js|ts)$/)) return;
-        const command = (await import(newRoot)).default as SlashCommand;
+        const command = (await import(newRoot)).default as SlashCommand | MessageCommand;
         if (command instanceof SlashCommand) {
-            return client.slashCommands.set(command.data.name, command);
+            client.slashCommands.set(command.data.name, command);
         } else {
-            // Message commands... later
+            client.messageCommands.set(command.name, command);
+            command.aliases.forEach((alias) => client.messageCommands.set(alias, command));
         }
     }
 

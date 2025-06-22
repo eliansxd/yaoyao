@@ -5,7 +5,12 @@ import BotEvent from "../../modules/event";
 export default new BotEvent({
     name: "messageCreate",
     async run(message) {
-        if (message.author.bot || !message.guild) return;
+        if (!message.inGuild() || message.author?.bot) return;
+
+        // skip message command
+        const prefix = process.env.PREFIX as string;
+        if (message.content.startsWith(prefix)) return;
+
         const channelId = message.channelId;
         const stats = await getStats(channelId);
 
