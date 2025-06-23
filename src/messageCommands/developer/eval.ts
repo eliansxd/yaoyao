@@ -12,8 +12,8 @@ export default new MessageCommand({
         return false;
     },
     checks: [ownerOnly],
-    async run(message, ...codes) {
-        const codeText = codes.join("\n");
+    async run(message, ...code) {
+        const codeText = code.join("\n");
         const matches = [...codeText.matchAll(/```(?:\w+)?\n([\s\S]*?)```/g)];
         const newCode = matches[0]?.[1] || codeText;
 
