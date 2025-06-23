@@ -18,32 +18,15 @@ async function createSetting(guildId: string): Promise<ISnipeMessage> {
     return newModel;
 }
 
-export async function isEnableGuild(guildId: string): Promise<boolean> {
+export async function isEnableSnipe(guildId: string): Promise<boolean> {
     const setting = await getSetting(guildId);
-    if (!setting) return true;
-    return !setting.disableGuild;
+    if (setting) return setting.enable ?? false;
+    return false;
 }
 
-export async function isEnableChannel(guildId: string, channelId: string): Promise<boolean> {
-    const setting = await getSetting(guildId);
-    if (!setting) return true;
-    return !setting.disableChannel.includes(channelId);
-}
-
-export async function toggleChannelSnipe(guildId: string, channelId: string): Promise<boolean> {
+export async function toggleSnipe(guildId: string): Promise<boolean> {
     const setting = await createSetting(guildId);
-    if (!setting.disableChannel.includes(channelId)) {
-        setting.disableChannel.push(channelId);
-    } else {
-        setting.disableChannel = setting.disableChannel.filter((channel) => channel !== channelId);
-    }
+    setting.enable = !setting.enable;
     await setting.save();
-    return !setting.disableChannel.includes(channelId);
-}
-
-export async function toggleGuildSnipe(guildId: string): Promise<boolean> {
-    const setting = await createSetting(guildId);
-    setting.disableGuild = !setting.disableGuild;
-    await setting.save();
-    return !setting.disableGuild;
+    return setting.enable;
 }

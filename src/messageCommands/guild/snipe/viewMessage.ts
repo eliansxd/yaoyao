@@ -1,15 +1,12 @@
 import YaoYao from "../../../YaoYao";
-import { isEnableChannel, isEnableGuild } from "../../../modules/snipeMessage";
+import { isEnableSnipe } from "../../../modules/snipeMessage";
 import { MessageCommand } from "../../../modules/command";
 
 export default new MessageCommand({
     name: "snipe",
     async run(message) {
-        const { guildId, channelId } = message;
-        const isEnable =
-            (await isEnableChannel(guildId!, channelId)) && (await isEnableGuild(guildId!));
-
-        if (isEnable) {
+        const { guildId } = message;
+        if (await isEnableSnipe(guildId!)) {
             const yaoyao = message.client as YaoYao;
             const snipeMessage = yaoyao.snipeMessages.get(message.channelId);
 
@@ -20,6 +17,6 @@ export default new MessageCommand({
             return message.reply(snipeMessage.content);
         }
 
-        message.reply(`Kênh hiện tại hoặc server không bật chức năng snipe.`);
+        message.reply(`Server không bật chức năng snipe.`);
     },
 });

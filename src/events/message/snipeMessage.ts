@@ -1,6 +1,6 @@
 import YaoYao from "../../YaoYao";
 import BotEvent from "../../modules/event";
-import { isEnableChannel, isEnableGuild } from "../../modules/snipeMessage";
+import { isEnableSnipe } from "../../modules/snipeMessage";
 
 export default new BotEvent({
     name: "messageDelete",
@@ -9,15 +9,11 @@ export default new BotEvent({
         const { guildId, channelId } = message;
         const yaoyao = message.client as YaoYao;
 
-        const isEnable =
-            (await isEnableGuild(guildId)) && (await isEnableChannel(guildId, channelId));
-        if (!isEnable) {
-            if (!isEnable) {
-                if (yaoyao.snipeMessages.has(channelId)) {
-                    yaoyao.snipeMessages.delete(channelId);
-                }
-                return;
+        if (!(await isEnableSnipe(guildId))) {
+            if (yaoyao.snipeMessages.has(channelId)) {
+                yaoyao.snipeMessages.delete(channelId);
             }
+            return;
         }
 
         if (message.partial) {
@@ -30,6 +26,7 @@ export default new BotEvent({
                 return;
             }
         }
+
         yaoyao.snipeMessages.set(message.channelId, message);
     },
 });

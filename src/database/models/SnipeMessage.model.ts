@@ -3,8 +3,7 @@ import { ISnipeMessage } from "../interfaces";
 
 const SnipeMessageSchema = new Schema<ISnipeMessage>({
     guildId: { type: String, required: true },
-    disableChannel: { type: [String], default: [] },
-    disableGuild: { type: Boolean, default: false },
+    enable: { type: Boolean, default: true },
 });
 
 const SnipeMessageModel = mongoose.model<ISnipeMessage>("SnipeMessage", SnipeMessageSchema);
