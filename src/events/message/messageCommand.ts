@@ -1,13 +1,15 @@
 import { UserError } from "../../modules/exceptions/base";
 import YaoYao from "../../YaoYao";
 import BotEvent from "../../modules/event";
+import { getPrefixSetting } from "../../modules/guildPrefix";
 
 export default new BotEvent({
     name: "messageCreate",
     async run(message) {
         if (!message.inGuild() || message.author?.bot) return;
 
-        const prefix = process.env.PREFIX as string;
+        const prefixSetting = await getPrefixSetting(message.guildId);
+        const prefix = prefixSetting?.prefix ?? process.env.PREFIX ?? "s!";
         const content = message.content.trim();
 
         if (!content.startsWith(prefix)) return;

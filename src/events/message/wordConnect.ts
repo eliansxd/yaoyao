@@ -7,10 +7,6 @@ export default new BotEvent({
     async run(message) {
         if (!message.inGuild() || message.author?.bot) return;
 
-        // skip message command
-        const prefix = process.env.PREFIX as string;
-        if (message.content.startsWith(prefix)) return;
-
         const channelId = message.channelId;
         const stats = await getStats(channelId);
 
