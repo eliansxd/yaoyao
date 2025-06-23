@@ -1,10 +1,10 @@
-import { getStats, updateStats } from "../../modules/wordConnect";
+import { getStats, removeStats } from "../../../modules/wordConnect";
 import { ChannelType, SlashCommandBuilder } from "discord.js";
-import { SlashCommand } from "../../modules/command";
+import { SlashCommand } from "../../../modules/command";
 
 const data = new SlashCommandBuilder()
-    .setName("wordconnect_reset")
-    .setDescription("Đặt lại từ đã sử dụng.")
+    .setName("wordconnect_remove")
+    .setDescription("Xóa bỏ nối từ Tiếng Việt.")
     .addChannelOption((opt) =>
         opt
             .setName("channel")
@@ -26,8 +26,10 @@ export default new SlashCommand({
             const stats = await getStats(targetChannel.id);
             if (!stats) return interaction.reply("Kênh này chưa được đặt là kênh chơi nối từ.");
 
-            await updateStats(targetChannel.id, { usedWords: [] });
-            interaction.reply(`Đã đặt lại từ trong kênh ${targetChannel.toString()}.`);
+            await removeStats(targetChannel.id);
+            interaction.reply(
+                `Đã xóa bỏ nối từ Tiếng Việt trong kênh ${targetChannel.toString()}.`
+            );
         } catch (err) {
             console.error(err);
             interaction.reply("Đã có lỗi xảy ra khi thiết lập trò chơi.");

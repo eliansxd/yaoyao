@@ -1,7 +1,7 @@
-import { getStats, createStats } from "../../modules/wordConnect";
+import { getStats, createStats } from "../../../modules/wordConnect";
 import { ChannelType, SlashCommandBuilder, TextChannel } from "discord.js";
-import { SlashCommand } from "../../modules/command";
-import { words_start } from "../../words";
+import { SlashCommand } from "../../../modules/command";
+import { words_start } from "../../../words";
 
 const data = new SlashCommandBuilder()
     .setName("wordconnect_setup")

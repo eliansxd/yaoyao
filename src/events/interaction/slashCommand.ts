@@ -4,8 +4,7 @@ import YaoYao from "../../YaoYao";
 export default new BotEvent({
     name: "interactionCreate",
     async run(interaction) {
-        if (!interaction.isChatInputCommand()) return;
-
+        if (!interaction.isChatInputCommand()) return; 
         if (interaction.user.bot) return;
 
         const yaoyao = interaction.client as YaoYao;
