@@ -1,6 +1,6 @@
 import { MessageCommand } from "../../../modules/command";
 import { updatePrefix } from "../../../modules/guildPrefix";
-import { checkPermissions } from "../../../modules/checks/access";
+import { hasPermissions } from "../../../modules/checks/access";
 import { PermissionFlagsBits } from "discord.js";
 
 export default new MessageCommand({
@@ -11,7 +11,7 @@ export default new MessageCommand({
         message.reply("Vui lòng nhập prefix!");
         return false;
     },
-    checks: [checkPermissions([PermissionFlagsBits.ManageChannels])],
+    checks: [hasPermissions([PermissionFlagsBits.ManageChannels])],
     async run(message, prefix) {
         const { guildId } = message;
         const setting = await updatePrefix(guildId, prefix);
