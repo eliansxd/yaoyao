@@ -1,8 +1,4 @@
-export class WordConnectError extends Error {
-    constructor(message: string) {
-        super(message);
-    }
-}
+import { WordConnectError } from "./base";
 
 export class PlayerAlreadyPlayed extends WordConnectError {
     constructor() {

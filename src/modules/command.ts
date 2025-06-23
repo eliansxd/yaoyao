@@ -26,11 +26,9 @@ export class SlashCommand {
 interface MessageCommandOptions {
     name: string;
     aliases?: string[];
-    validate?: (
-        message: Message,
-        ...args: string[]
-    ) => boolean | string | Promise<boolean | string>;
-    run: (message: Message, ...args: string[]) => Promise<any>;
+    validate?: (message: Message<true>, ...args: string[]) => boolean | Promise<boolean>;
+    checks?: ((message: Message<true>) => boolean | Promise<boolean>)[];
+    run: (message: Message<true>, ...args: string[]) => Promise<any>;
     disabled?: boolean;
 }
 
@@ -38,6 +36,7 @@ export class MessageCommand {
     constructor(options: MessageCommandOptions) {
         this.name = options.name;
         this.aliases = options.aliases ?? [];
+        this.checks = options.checks ?? [];
         this.validate = options.validate;
         this.run = options.run;
         this.disabled = options.disabled ?? false;
@@ -46,6 +45,7 @@ export class MessageCommand {
     public readonly name;
     public readonly aliases;
     public readonly validate;
+    public readonly checks;
     public readonly run;
     public readonly disabled;
 }

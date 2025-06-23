@@ -1,4 +1,4 @@
-import { WordConnectError } from "../../modules/exceptions/WordConnectError";
+import { WordConnectError } from "../../modules/exceptions/base";
 import { getStats, playerTurnHandle } from "../../modules/wordConnect";
 import BotEvent from "../../modules/event";
 

@@ -6,7 +6,7 @@ export default new MessageCommand({
     name: "snipe",
     async run(message) {
         const { guildId } = message;
-        if (await isEnableSnipe(guildId!)) {
+        if (await isEnableSnipe(guildId)) {
             const yaoyao = message.client as YaoYao;
             const snipeMessage = yaoyao.snipeMessages.get(message.channelId);
 
