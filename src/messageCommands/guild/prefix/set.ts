@@ -1,5 +1,5 @@
 import { MessageCommand } from "../../../modules/command";
-import { updatePrefix } from "../../../modules/guildPrefix";
+import { updatePrefix } from "../../../modules/database/guildPrefix";
 import { hasPermissions } from "../../../modules/checks/access";
 import { PermissionFlagsBits } from "discord.js";
 

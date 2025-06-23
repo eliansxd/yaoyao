@@ -1,5 +1,5 @@
 import { MessageCommand } from "../../../modules/command";
-import { toggleSnipe } from "../../../modules/snipeMessage";
+import { toggleSnipe } from "../../../modules/database/snipeMessage";
 import { hasPermissions } from "../../../modules/checks/access";
 import { PermissionFlagsBits } from "discord.js";
 

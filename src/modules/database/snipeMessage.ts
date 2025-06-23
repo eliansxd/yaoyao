@@ -1,5 +1,5 @@
-import { ISnipeMessage } from "../database/interfaces";
-import SnipeMessageModel from "../database/models/SnipeMessage.model";
+import { ISnipeMessage } from "../../database/interfaces";
+import SnipeMessageModel from "../../database/models/SnipeMessage.model";
 
 async function getSetting(guildId: string): Promise<ISnipeMessage | null> {
     try {

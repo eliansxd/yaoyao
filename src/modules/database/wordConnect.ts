@@ -1,7 +1,7 @@
-import * as WCError from "./exceptions/WordConnectError";
-import WordConnectStats from "../database/models/WordConnectStats.model";
-import { IWordConnectStats } from "../database/interfaces";
-import { words } from "../words";
+import * as WCError from "../exceptions/WordConnectError";
+import WordConnectStats from "../../database/models/WordConnectStats.model";
+import { IWordConnectStats } from "../../database/interfaces";
+import { words } from "../../words";
 
 export async function getStats(channelId: string): Promise<IWordConnectStats | null> {
     try {

@@ -1,5 +1,5 @@
-import { IGuildPrefix } from "../database/interfaces";
-import GuildPrefixModel from "../database/models/GuildPrefix.model";
+import { IGuildPrefix } from "../../database/interfaces";
+import GuildPrefixModel from "../../database/models/GuildPrefix.model";
 
 export async function getPrefixSetting(guildId: string): Promise<IGuildPrefix | null> {
     try {

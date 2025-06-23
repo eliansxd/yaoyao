@@ -1,5 +1,5 @@
 import YaoYao from "../../../YaoYao";
-import { isEnableSnipe } from "../../../modules/snipeMessage";
+import { isEnableSnipe } from "../../../modules/database/snipeMessage";
 import { MessageCommand } from "../../../modules/command";
 import { PermissionFlagsBits, WebhookClient, userMention, time } from "discord.js";
 

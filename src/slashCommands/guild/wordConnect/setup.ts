@@ -1,4 +1,4 @@
-import { getStats, createStats } from "../../../modules/wordConnect";
+import { getStats, createStats } from "../../../modules/database/wordConnect";
 import { ChannelType, SlashCommandBuilder, TextChannel } from "discord.js";
 import { SlashCommand } from "../../../modules/command";
 import { words_start } from "../../../words";

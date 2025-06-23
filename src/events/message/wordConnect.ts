@@ -1,5 +1,5 @@
 import { WordConnectError } from "../../modules/exceptions/base";
-import { getStats, playerTurnHandle } from "../../modules/wordConnect";
+import { getStats, playerTurnHandle } from "../../modules/database/wordConnect";
 import BotEvent from "../../modules/event";
 
 export default new BotEvent({

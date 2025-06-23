@@ -1,6 +1,6 @@
 import YaoYao from "../../YaoYao";
 import BotEvent from "../../modules/event";
-import { isEnableSnipe } from "../../modules/snipeMessage";
+import { isEnableSnipe } from "../../modules/database/snipeMessage";
 
 export default new BotEvent({
     name: "messageDelete",

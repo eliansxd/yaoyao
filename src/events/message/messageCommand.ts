@@ -1,7 +1,7 @@
 import { UserError } from "../../modules/exceptions/base";
 import YaoYao from "../../YaoYao";
 import BotEvent from "../../modules/event";
-import { getPrefixSetting } from "../../modules/guildPrefix";
+import { getPrefixSetting } from "../../modules/database/guildPrefix";
 
 export default new BotEvent({
     name: "messageCreate",
