@@ -15,31 +15,22 @@ const data = new SlashCommandBuilder()
 export default new SlashCommand({
     data,
     async run(interaction) {
-        let channel = interaction.options.getChannel("channel");
-        if (channel?.type !== ChannelType.GuildText) {
-            if (interaction.channel?.type !== ChannelType.GuildText) {
-                return interaction.reply(`Vui lòng chọn kênh văn bản.`);
-            } else {
-                channel = interaction.channel;
-            }
+        const channelInput = interaction.options.getChannel("channel");
+        const targetChannel = channelInput ?? interaction.channel;
+
+        if (targetChannel?.type !== ChannelType.GuildText) {
+            return interaction.reply(`Kênh được chọn không phải là kênh văn bản.`);
         }
 
         try {
-            const stats = await getStats(channel.id);
-            if (!stats)
-                return interaction.reply(
-                    "Kênh này chưa được đặt là kênh chơi nối từ."
-                );
+            const stats = await getStats(targetChannel.id);
+            if (!stats) return interaction.reply("Kênh này chưa được đặt là kênh chơi nối từ.");
 
-            await updateStats(channel.id, { usedWords: [] });
-            return interaction.reply(
-                `Đã đặt lại từ trong kênh ${channel.toString()}.`
-            );
+            await updateStats(targetChannel.id, { usedWords: [] });
+            interaction.reply(`Đã đặt lại từ trong kênh ${targetChannel.toString()}.`);
         } catch (err) {
             console.error(err);
-            return interaction.reply(
-                "Đã có lỗi xảy ra khi thiết lập trò chơi."
-            );
+            interaction.reply("Đã có lỗi xảy ra khi thiết lập trò chơi.");
         }
     },
 });

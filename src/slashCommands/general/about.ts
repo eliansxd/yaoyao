@@ -1,20 +1,16 @@
 import { SlashCommandBuilder, User, EmbedBuilder } from "discord.js";
 import { SlashCommand } from "../../modules/command";
 
-const data = new SlashCommandBuilder()
-    .setName("about")
-    .setDescription("Xem thông tin về YaoYao.");
+const data = new SlashCommandBuilder().setName("about").setDescription("Xem thông tin về YaoYao.");
 
 export default new SlashCommand({
     data,
     async run(interaction) {
-        if (!interaction.client.application?.owner)
-            await interaction.client.application?.fetch();
+        if (!interaction.client.application?.owner) await interaction.client.application?.fetch();
 
         const owner = interaction.client.application?.owner;
         const ownerName = owner instanceof User ? owner.username : "Unknown";
-        const ownerAvatar =
-            owner instanceof User ? owner.displayAvatarURL() : "Unknown";
+        const ownerAvatar = owner instanceof User ? owner.displayAvatarURL() : "Unknown";
 
         const botName = interaction.client.user?.displayName ?? "YaoYao";
         const botAvatar = interaction.client.user?.displayAvatarURL() ?? "";

@@ -16,38 +16,31 @@ const data = new SlashCommandBuilder()
 export default new SlashCommand({
     data,
     async run(interaction) {
-        let channel = interaction.options.getChannel("channel");
-        if (channel?.type !== ChannelType.GuildText) {
-            if (interaction.channel?.type !== ChannelType.GuildText) {
-                return interaction.reply(`Vui lòng chọn kênh văn bản.`);
-            } else {
-                channel = interaction.channel;
-            }
+        const channelInput = interaction.options.getChannel("channel");
+        const targetChannel = channelInput ?? interaction.channel;
+        if (targetChannel?.type !== ChannelType.GuildText) {
+            return interaction.reply(`Kênh được chọn không phải là kênh văn bản.`);
         }
 
         try {
-            const stats = await getStats(channel.id);
-            if (stats)
-                return interaction.reply("Kênh này đã là kênh chơi nối từ.");
+            const stats = await getStats(targetChannel.id);
+            if (stats) return interaction.reply("Kênh này đã là kênh chơi nối từ.");
 
-            const startWord =
-                words_start[Math.floor(Math.random() * words_start.length)];
-            await createStats(channel.id, startWord);
+            const startWord = words_start[Math.floor(Math.random() * words_start.length)];
+            await createStats(targetChannel.id, startWord);
 
-            if (channel instanceof TextChannel) {
-                channel.send(
+            if (targetChannel instanceof TextChannel) {
+                targetChannel.send(
                     `Trò chơi nối từ đã được thiết lập!\nTừ bắt đầu là: ${startWord}`
                 );
+                interaction.reply(`Kênh ${targetChannel.toString()} đã bắt đầu chơi nối từ.`);
+                return;
             }
 
-            return interaction.reply(
-                `Kênh ${channel.toString()} đã bắt đầu chơi nối từ.`
-            );
+            interaction.reply("Kênh được chọn không phải là kênh văn bản.");
         } catch (err) {
             console.error(err);
-            return interaction.reply(
-                "Đã có lỗi xảy ra khi thiết lập trò chơi."
-            );
+            interaction.reply("Đã có lỗi xảy ra khi thiết lập trò chơi.");
         }
     },
 });

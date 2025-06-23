@@ -23,13 +23,13 @@ export class SlashCommand {
     public readonly disabled;
 }
 
-type ValidateResult = boolean | string | Promise<boolean | string>;
-type Validate = (message: Message, ...args: string[]) => ValidateResult;
-
 interface MessageCommandOptions {
     name: string;
     aliases?: string[];
-    validate?: Validate;
+    validate?: (
+        message: Message,
+        ...args: string[]
+    ) => boolean | string | Promise<boolean | string>;
     run: (message: Message, ...args: string[]) => Promise<any>;
     disabled?: boolean;
 }

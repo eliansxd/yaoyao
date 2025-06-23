@@ -19,6 +19,7 @@ export default class YaoYao extends Client {
 
     public readonly slashCommands: Map<string, SlashCommand>;
     public readonly messageCommands: Map<string, MessageCommand>;
+
     public readonly snipeMessages: Map<string, Message>;
 }
 

@@ -6,7 +6,7 @@ async function getSetting(guildId: string): Promise<ISnipeMessage | null> {
         const setting = await SnipeMessageModel.findOne({ guildId });
         return setting;
     } catch (error) {
-        console.error(error);
+        console.error("[SnipeMessage] Failed to get setting:", error);
         return null;
     }
 }
