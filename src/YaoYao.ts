@@ -1,4 +1,4 @@
-import { GatewayIntentBits, Client, ClientOptions, Message } from "discord.js";
+import { GatewayIntentBits, Client, ClientOptions, Message, User } from "discord.js";
 import { loadCommands, loadEvents } from "./handlers";
 import { MessageCommand, SlashCommand } from "./modules/command";
 import "dotenv/config";
@@ -13,6 +13,8 @@ export default class YaoYao extends Client {
 
         this.snipeMessages = new Map();
 
+        this.owners = [];
+
         loadCommands(this);
         loadEvents(this);
     }
@@ -21,6 +23,8 @@ export default class YaoYao extends Client {
     public readonly messageCommands: Map<string, MessageCommand>;
 
     public readonly snipeMessages: Map<string, Message<true>>;
+
+    public readonly owners: User[];
 }
 
 const yaoyao = new YaoYao({
