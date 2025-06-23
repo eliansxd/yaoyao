@@ -11,7 +11,7 @@ export default new MessageCommand({
         message.reply("Vui lòng nhập prefix!");
         return false;
     },
-    checks: [hasPermissions([PermissionFlagsBits.ManageChannels])],
+    checks: [hasPermissions([PermissionFlagsBits.ManageGuild])],
     async run(message, prefix) {
         const { guildId } = message;
         const setting = await updatePrefix(guildId, prefix);
